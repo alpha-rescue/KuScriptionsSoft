@@ -312,7 +312,7 @@ if __name__ == '__main__':
             authTokens.append(i.rstrip().split('auth_token=')[-1].split(';')[0])
             csrfs.append(i.rstrip().split('ct0=')[-1].split(';')[0])
 
-    with open("utils/config.json") as file:
+    with open("utils_/config.json") as file:
         data = json.loads(file.read())
 
     threads_count = data['config']['threading_count']
