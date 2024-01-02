@@ -195,6 +195,8 @@ def distributor(list_, thread_number):
                 refCount = 0
                 localRefCount = random.randint(list_[0]['refs'][0], list_[0]['refs'][1])
 
+                time.sleep(random.randint(account['delay'][0], account['delay'][0]))
+
             if not newRef:
 
                 try:
@@ -249,6 +251,7 @@ def distributor(list_, thread_number):
 
             logger.success(
                 f"Аккаунт успешно зарегистрирован | {refCount} | {account['twitter']['auth_token']}")
+            time.sleep(random.randint(account['delay'][0], account['delay'][0]))
 
     if refCount != localRefCount:
         result = check_points(private=ref['private'],
