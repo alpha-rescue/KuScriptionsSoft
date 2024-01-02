@@ -175,64 +175,80 @@ def distributor(list_, thread_number):
 
     for account in list_:
 
-        if refCount == localRefCount:
+        if auto_ref_mode:
 
-            result = check_points(private=ref['private'],
-                                   tw_auth_token=ref['twitter']['auth_token'],
-                                   tw_csrf=ref['twitter']['ct0'],
-                                   proxy=ref['proxy'],
-                                   Ref=True if globalRefCode != "" else False,
-                                   InviteCode=globalRefCode)
+            if refCount == localRefCount:
 
-            logger.info(f"Завершен прокрут пачки для рефа ({ref['twitter']['auth_token']} | {ref['private']})")
-            logger.info(f"points - {result['data']['point']} | rank - {result['data']['rank']} | confirmed refs - {result['data']['confirmed']}")
-            logger.skip()
+                result = check_points(private=ref['private'],
+                                       tw_auth_token=ref['twitter']['auth_token'],
+                                       tw_csrf=ref['twitter']['ct0'],
+                                       proxy=ref['proxy'],
+                                       Ref=True if globalRefCode != "" else False,
+                                       InviteCode=globalRefCode)
 
-            newRef = True
+                logger.info(f"Завершен прокрут пачки для рефа ({ref['twitter']['auth_token']} | {ref['private']})")
+                logger.info(f"points - {result['data']['point']} | rank - {result['data']['rank']} | confirmed refs - {result['data']['confirmed']}")
+                logger.skip()
 
-            refCount = 0
-            localRefCount = random.randint(list_[0]['refs'][0], list_[0]['refs'][1])
+                newRef = True
 
-        if not newRef:
+                refCount = 0
+                localRefCount = random.randint(list_[0]['refs'][0], list_[0]['refs'][1])
 
-            try:
-                function(private=account['private'],
-                         tw_auth_token=account['twitter']['auth_token'],
-                         tw_csrf=account['twitter']['ct0'],
-                         proxy=account['proxy'],
-                         Ref=True,
-                         InviteCode=refCode)
+            if not newRef:
 
-                refCount+=1
+                try:
+                    function(private=account['private'],
+                             tw_auth_token=account['twitter']['auth_token'],
+                             tw_csrf=account['twitter']['ct0'],
+                             proxy=account['proxy'],
+                             Ref=True,
+                             InviteCode=refCode)
 
-                logger.success(f"Аккаунт успешно зарегистрирован | {refCount}/{localRefCount} | {account['twitter']['auth_token']}")
+                    refCount+=1
 
-            except Exception as e:
-                logger.error(f"Регистрация реферала не удалась | {str(e)}")
+                    logger.success(f"Аккаунт успешно зарегистрирован | {refCount}/{localRefCount} | {account['twitter']['auth_token']}")
 
-            time.sleep(random.randint(account['delay'][0],account['delay'][0]))
+                except Exception as e:
+                    logger.error(f"Регистрация реферала не удалась | {str(e)}")
+
+                time.sleep(random.randint(account['delay'][0],account['delay'][0]))
+
+            else:
+
+                logger.info("Регистрация пачки началась")
+
+                try:
+                    ref = account
+                    refCode = function(private=account['private'],
+                                     tw_auth_token=account['twitter']['auth_token'],
+                                     tw_csrf=account['twitter']['ct0'],
+                                     proxy=account['proxy'],
+                                     Ref=True if globalRefCode != "" else False,
+                                     InviteCode=globalRefCode)
+                    logger.success(f"Рефовод успешно зарегистрирован | {refCode} | {account['twitter']['auth_token']}")
+
+                    if auto_ref_mode:
+                        newRef = False
+
+                except Exception as e:
+                    logger.error(f"Регистрация рефовода не удалась | {str(e)}")
+
+                time.sleep(random.randint(account['delay'][0], account['delay'][0]))
 
         else:
 
-            logger.info("Регистрация пачки началась")
+            function(private=account['private'],
+                     tw_auth_token=account['twitter']['auth_token'],
+                     tw_csrf=account['twitter']['ct0'],
+                     proxy=account['proxy'],
+                     Ref=True,
+                     InviteCode=globalRefCode)
 
-            try:
-                ref = account
-                refCode = function(private=account['private'],
-                                 tw_auth_token=account['twitter']['auth_token'],
-                                 tw_csrf=account['twitter']['ct0'],
-                                 proxy=account['proxy'],
-                                 Ref=True if globalRefCode != "" else False,
-                                 InviteCode=globalRefCode)
-                logger.success(f"Рефовод успешно зарегистрирован | {refCode} | {account['twitter']['auth_token']}")
+            refCount += 1
 
-                if auto_ref_mode:
-                    newRef = False
-
-            except Exception as e:
-                logger.error(f"Регистрация рефовода не удалась | {str(e)}")
-
-            time.sleep(random.randint(account['delay'][0], account['delay'][0]))
+            logger.success(
+                f"Аккаунт успешно зарегистрирован | {refCount} | {account['twitter']['auth_token']}")
 
     if refCount != localRefCount:
         result = check_points(private=ref['private'],
