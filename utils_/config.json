@@ -1,0 +1,16 @@
+{
+    "config": {
+        "ref_code": "",
+        "auto_ref_mode": true,
+
+        "refs": {
+            "maxCount": 45,
+            "minCount": 15
+        },
+
+        "delay": {
+            "min": 2,
+            "max": 5
+        }
+    }
+}
