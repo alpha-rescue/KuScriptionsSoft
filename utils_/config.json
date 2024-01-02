@@ -2,6 +2,7 @@
     "config": {
         "ref_code": "",
         "auto_ref_mode": true,
+        "threading_count": 1,
 
         "refs": {
             "maxCount": 45,

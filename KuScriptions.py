@@ -306,7 +306,7 @@ if __name__ == '__main__':
     proxies = []
     privates = []
 
-    threads_count = 1
+
 
     with open('Files/Privates.txt', 'r') as file:
         for i in file:
@@ -324,6 +324,7 @@ if __name__ == '__main__':
     with open("utils/config.json") as file:
         data = json.loads(file.read())
 
+    threads_count = data['config']['threading_count']
 
     ready_array = []
     for index, item in enumerate(proxies):
