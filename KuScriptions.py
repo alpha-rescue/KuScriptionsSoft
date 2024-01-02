@@ -188,6 +188,8 @@ def distributor(list_, thread_number):
             logger.info(f"points - {result['data']['point']} | rank - {result['data']['rank']} | confirmed refs - {result['data']['confirmed']}")
             logger.skip()
 
+            newRef = True
+
             refCount = 0
             localRefCount = random.randint(list_[0]['refs'][0], list_[0]['refs'][1])
 
@@ -243,6 +245,8 @@ def distributor(list_, thread_number):
         logger.info(f"Завершен прокрут пачки для рефа ({ref['twitter']['auth_token']} | {ref['private']})")
         logger.info(f"points - {result['data']['point']} | rank - {result['data']['rank']} | confirmed refs - {result['data']['confirmed']}")
         logger.skip()
+
+        newRef = True
 
 def function(private: str, proxy: str, tw_auth_token: str, tw_csrf: str , Ref: bool, InviteCode: str = None):
 
