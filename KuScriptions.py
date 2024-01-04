@@ -21,7 +21,7 @@ def generate_random_number(length: int) -> int:
 
 def generate_csrf_token() -> str:
     random_int: int = generate_random_number(length=3)
-    current_timestamp: int = int(str(int(datetime.datetime.time())) + str(random_int))
+    current_timestamp: int = int(str(int(datetime.datetime.now().timestamp())) + str(random_int))
     random_csrf_token = md5(string=f'{current_timestamp}:{current_timestamp},{0}:{0}'.encode()).hexdigest()
 
     return random_csrf_token
